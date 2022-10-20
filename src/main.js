@@ -11,7 +11,7 @@ function setCardType(type) {
   "visa": ["#436D99 ", "#2D57F2"],
   "mastercard": ["#DF6F29", "#C69347"],
   "default": ["black", "grey"]
-  }
+  };
 
   ccBgColor01.setAttribute("fill", colors[type][0]);
   ccBgColor02.setAttribute("fill", colors[type][1]);
@@ -43,10 +43,10 @@ const expirationDatePattern = {
       to: 12,
     },
   }
-}
+};
 const expirationDateMasked = IMask(expirationDate, expirationDatePattern);
 
-const cardNumber = document.querySelector("#card-number")
+const cardNumber = document.querySelector("#card-number");
 const cardNumberPattern = {
   mask: [
     {
@@ -73,5 +73,49 @@ const cardNumberPattern = {
 
     return foundMask;
   }
-}
+};
 const cardNumberMasked = IMask(cardNumber, cardNumberPattern);
+
+const cardHolder = document.querySelector("#card-holder");
+cardHolder.addEventListener("input", () => {
+  const ccHolder = document.querySelector(".cc-holder .value");
+
+  ccHolder.innerText = cardHolder.value.length === 0 ? "FULANO DA SILVA" : cardHolder.value;
+});
+
+securityCodeMasked.on("accept", () => {
+  updateSecurityCode(securityCodeMasked.value);
+});
+
+function updateSecurityCode(code) {
+  const ccSecurity = document.querySelector(".cc-security .value");
+
+  ccSecurity.innerText = code.length === 0 ? "123" : code;
+};
+
+const addButton = document.querySelector("#add-card");
+addButton.addEventListener("click", () => {
+  alert("Cartão adicionado");
+});
+
+cardNumberMasked.on("accept", () =>{
+  const cardtype = cardNumberMasked.masked.currentMask.cardtype;
+  setCardType(cardtype);
+  updateCardNumber(cardNumberMasked.value);
+});
+
+function updateCardNumber(number) {
+  const ccNumber = document.querySelector(".cc-number");
+
+  ccNumber.innerText = number.length === 0 ? "1234 5678 9012 3456" : number;
+};
+
+expirationDateMasked.on("accept", () => {
+  updateExpirationDate(expirationDateMasked.value);
+});
+
+function updateExpirationDate(date) {
+  const ccExpiration = document.querySelector(".cc-extra .value");
+  ccExpiration.innerText = date.length === 0 ? "02/32" : date;
+};
+
